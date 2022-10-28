@@ -2,10 +2,8 @@ package com.retmix.shop.shop.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(schema = "shop", name = "users")
@@ -30,5 +28,12 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "token")
+    private String token;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+    joinColumns = {@JoinColumn(name = "id_user", referencedColumnName = "id")},
+    inverseJoinColumns = {@JoinColumn(name = "id_role", referencedColumnName = "id")})
+    private List<Role> roles;
 }
