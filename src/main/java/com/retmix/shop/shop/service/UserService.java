@@ -10,7 +10,7 @@ public interface UserService {
 
     User register(User user);
 
-    User auth(String email, String password);
+    boolean auth(String email, String password);
 
     List<Products> showProductList();
 
@@ -19,6 +19,10 @@ public interface UserService {
     Products updateProductById(Long id, BigDecimal updatePrice);
 
     void removeProductById(Long id);
+
+    User findByEmail(String email);
+
+
 
 
 }

@@ -3,18 +3,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="1.0.1.6" author="retmix">
-        <createTable schemaName="shop" tableName="roles">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="title" type="varchar(100)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="1.0.2.6" author="retmix">
+    <changeSet id="2.1.1" author="retmix">
         <createTable schemaName="shop" tableName="users">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -35,24 +24,13 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="token" type="text" defaultValue="">
+            <column name="role" type="varchar(25)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
-    <changeSet id="1.0.3.6" author="retmix">
-        <createTable schemaName="shop" tableName="user_role">
-            <column name="id_user" type="bigint">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="id_role" type="bigint">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-    
-    <changeSet id="1.0.4.6" author="retmix">
+    <changeSet id="2.2.1" author="retmix">
         <createTable schemaName="shop" tableName="products">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -69,7 +47,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="1.0.5.6" author="retmix">
+    <changeSet id="2.3.1" author="retmix">
         <createTable schemaName="shop" tableName="basket">
 
             <column name="id" type="bigint" autoIncrement="true">
@@ -82,35 +60,10 @@
             <column name="id_product" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="price_basket" type="float">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
     </changeSet>
 
-    <changeSet id="1.0.6.6" author="retmix">
-        <addForeignKeyConstraint baseTableSchemaName="shop"
-                                 baseTableName="user_role"
-                                 baseColumnNames="id_user"
-                                 constraintName="id_userRole_fk"
-                                 onDelete="CASCADE"
-                                 referencedTableSchemaName="shop"
-                                 referencedTableName="users"
-                                 referencedColumnNames="id"/>
-    </changeSet>
-
-    <changeSet id="1.0.7.6" author="retmix">
-        <addForeignKeyConstraint baseTableSchemaName="shop"
-                                 baseTableName="user_role"
-                                 baseColumnNames="id_role"
-                                 constraintName="id_roleUser_fk"
-                                 onDelete="CASCADE"
-                                 referencedTableSchemaName="shop"
-                                 referencedTableName="roles"
-                                 referencedColumnNames="id"/>
-    </changeSet>
-
-    <changeSet id="1.0.8.6" author="retmix">
+    <changeSet id="2.4.1" author="retmix">
         <addForeignKeyConstraint referencedTableSchemaName="shop"
                                  baseTableName="basket"
                                  baseColumnNames="id_user"
@@ -121,7 +74,7 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="1.0.9.6" author="retmix">
+    <changeSet id="2.5.1" author="retmix">
         <addForeignKeyConstraint baseTableSchemaName="shop"
                                  baseTableName="basket"
                                  baseColumnNames="id_product"
@@ -132,23 +85,14 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="1.0.10.6" author="retmix">
-        <insert schemaName="shop" tableName="roles">
-            <column name="title" value="ROLE_CLIENT"/>
-        </insert>
-
-        <insert schemaName="shop" tableName="roles">
-            <column name="title" value="ROLE_ADMIN"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="1.0.11.6" author="retmix">
+    <changeSet id="2.7.1" author="retmix">
         <insert schemaName="shop" tableName="users">
             <column name="email" value="admin@shop.ru"/>
             <column name="surname" value="Neupokoev"/>
             <column name="firstname" value="Andrey"/>
             <column name="lastname" value="Evgen"/>
-            <column name="password" value="QWEasd123"/>
+            <column name="password" value="$2a$04$t.llICzH5wDSEK.qsIkxYO58F7L5n7yeom5JRU3T6d.KREiPoYZhi"/>
+            <column name="role" value="ADMIN"/>
         </insert>
 
         <insert schemaName="shop" tableName="users">
@@ -156,11 +100,12 @@
             <column name="surname" value="Eldar"/>
             <column name="firstname" value="Samset"/>
             <column name="lastname" value="Quy"/>
-            <column name="password" value="password"/>
+            <column name="password" value="$2a$04$zuh3cw7d6.Dj4jbexanhvOX.55JooXeCLkFEJn76cpXMHBL1t5huu"/>
+            <column name="role" value="CLIENT"/>
         </insert>
     </changeSet>
 
-    <changeSet id="1.0.12.6" author="retmix">
+    <changeSet id="2.6.1" author="retmix">
         <insert schemaName="shop" tableName="products">
             <column name="title" value="Pizza"/>
             <column name="description" value="This is pizza very very tasty"/>

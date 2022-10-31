@@ -1,12 +1,13 @@
 package com.retmix.shop.shop.service.impl;
 
 import com.retmix.shop.shop.model.Products;
+import com.retmix.shop.shop.model.Role;
 import com.retmix.shop.shop.model.User;
 import com.retmix.shop.shop.repository.ProductRepository;
-import com.retmix.shop.shop.repository.RoleRepository;
 import com.retmix.shop.shop.repository.UserRepository;
 import com.retmix.shop.shop.service.UserService;
 import lombok.Data;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,19 +17,29 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ProductRepository productRepository;
 
     @Override
     public User register(User user) {
-        User registerUser = user;
-        return null;
+
+        User registerUser = userRepository.findByEmail(user.getEmail());
+        if (registerUser!=null) return null;
+        registerUser = user;
+        registerUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        registerUser.setRole(Role.CLIENT);
+        return userRepository.save(registerUser);
 
     }
 
     @Override
-    public User auth(String email, String password) {
-        return null;
+    public boolean auth(String email, String password) {
+
+        User user = userRepository.findByEmail(email);
+        if (user==null) return false;
+        System.out.println(bCryptPasswordEncoder.encode(password));
+
+        return bCryptPasswordEncoder.matches(password, user.getPassword());
     }
 
     @Override
@@ -54,5 +65,10 @@ public class UserServiceImpl implements UserService {
         Products removeProduct = productRepository.findById(id).orElse(null);
         if (removeProduct==null) throw new NullPointerException("Product with id - "+id+" not found!");
         productRepository.delete(removeProduct);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

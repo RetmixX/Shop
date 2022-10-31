@@ -11,6 +11,7 @@ import java.util.List;
 public class User {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "email")
@@ -28,12 +29,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "token")
-    private String token;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-    joinColumns = {@JoinColumn(name = "id_user", referencedColumnName = "id")},
-    inverseJoinColumns = {@JoinColumn(name = "id_role", referencedColumnName = "id")})
-    private List<Role> roles;
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

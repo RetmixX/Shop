@@ -1,21 +1,27 @@
 package com.retmix.shop.shop.model;
 
-import lombok.Data;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-@Entity
-@Table(schema = "shop", name = "roles")
-@Data
-public class Role {
-    @Id
-    @Column(name = "id")
-    private Long id;
+public enum Role {
+    CLIENT(Set.of(Permission.ADD_TO_BASKET
+    ,Permission.DELETE_PRODUCT_FROM_BASKET, Permission.CHECK_SELF_BASKET)),
 
-    @Column(name = "title")
-    private String title;
+    ADMIN(Set.of(Permission.DELETE_PRODUCT, Permission.ADD_PRODUCT, Permission.UPDATE_PRODUCT));
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<User> users;
+    private final Set<Permission> permissions;
+
+    Role(Set<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
+    public Set<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public Set<SimpleGrantedAuthority> getAuthorities(){
+        return getPermissions().stream().map(permission -> new SimpleGrantedAuthority(permission.getPermission())).collect(Collectors.toSet());
+    }
 }
